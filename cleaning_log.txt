@@ -1,0 +1,53 @@
+1. LOAD
+  Loaded 320 rows x 21 columns from C:/Users/poorp/Downloads/nfl_positional_spending_2016_2025 (1).csv
+
+2. STRUCTURE CHECKS
+  [PASS] No missing values (found 0)
+  [PASS] No duplicate team-seasons (found 0)
+  [PASS] 32 distinct teams (found 32)
+  [PASS] 32 teams in every season {2016: 32, 2017: 32, 2018: 32, 2019: 32, 2020: 32, 2021: 32, 2022: 32, 2023: 32, 2024: 32, 2025: 32}
+  [PASS] No negative dollar amounts (found 0)
+  [PASS] total_amount_spent equals the sum of the 8 position groups (so it leaves out kickers, punters, long snappers and fullbacks)
+
+3. WINS
+  [PASS] Every win total is between 0 and games played
+  Wins per season vs. games/2 (a gap = tied games, which count as 0 wins):
+    2016: 254 wins, 256 games, 2 tie(s)
+    2017: 256 wins, 256 games, 0 tie(s)
+    2018: 254 wins, 256 games, 2 tie(s)
+    2019: 255 wins, 256 games, 1 tie(s)
+    2020: 255 wins, 256 games, 1 tie(s)
+    2021: 271 wins, 272 games, 1 tie(s)
+    2022: 269 wins, 271 games, 2 tie(s)
+    2023: 272 wins, 272 games, 0 tie(s)
+    2024: 272 wins, 272 games, 0 tie(s)
+    2025: 271 wins, 272 games, 1 tie(s)
+  Added games_played and win_pct (wins / games_played)
+
+4. SPENDING
+  Average team spending by year ($M): {2016: 131.2, 2017: 141.7, 2018: 151.5, 2019: 158.2, 2020: 170.8, 2021: 155.6, 2022: 166.1, 2023: 177.5, 2024: 195.0, 2025: 221.7}
+  Spending grows ~70% over the decade, so a 2016 dollar and a 2025 dollar mean different things. Adding two adjusted versions:
+    <position>_share = position dollars / team total that season
+    <position>_z     = standard deviations from that season's league mean
+  [PASS] Shares add to 1 for every team-season
+  Flagged 7 team-season(s) with a position more than 3 SD from its season mean (kept, column has_extreme_spend):
+    2017 Carolina Panthers: linebackers z = 3.02
+    2019 Baltimore Ravens: defensive_backs z = 3.097
+    2022 Dallas Cowboys: running_back z = 3.215
+    2022 New England Patriots: tight_end z = 3.057
+    2023 Buffalo Bills: defensive_backs z = 3.01
+    2024 Chicago Bears: linebackers z = 3.026
+    2024 New Orleans Saints: running_back z = 3.615
+
+5. ROSTER COUNTS
+  These count every player listed on the team during the season (not the 53-man roster), so numbers near 90-110 are normal.
+  roster_total_players: min 70.0, median 97.0, max 120.0
+  [PASS] Position counts never add to more than the roster total
+  Flagged 5 unusually small roster(s) (column roster_count_low):
+    2016 Carolina Panthers: 76 players
+    2016 Denver Broncos: 70 players
+    2016 Los Angeles Rams: 70 players
+    2016 San Francisco 49ers: 76 players
+    2016 Washington Commanders: 75 players
+
+Saved 320 rows x 42 columns to C:\Users\poorp\Downloads\nfl_cleaning\nfl_spending_clean.csv
